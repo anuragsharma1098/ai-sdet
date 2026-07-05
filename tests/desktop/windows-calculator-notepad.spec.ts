@@ -5,8 +5,13 @@ import { CalculatorApp } from '../../src/desktop/CalculatorApp';
 import { NotepadApp } from '../../src/desktop/NotepadApp';
 import { createWindowsSession } from '../../src/desktop/windowsDriver';
 
+/**
+ * Windows-only desktop workflow. The @desktop tag keeps this out of the default
+ * CI-safe suite because it requires a Windows GUI session and Appium endpoint.
+ */
 test.describe('Question #3: Windows desktop automation @desktop', () => {
   test('calculates results, saves summary in Notepad, and validates reopened file', async () => {
+    // Timestamped files make repeated local or review runs non-destructive.
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
     const filePath = join(process.cwd(), 'artifacts', 'desktop', `calculator-summary-${timestamp}.txt`);
     const calculations = [

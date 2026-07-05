@@ -4,5 +4,7 @@ playwright-report/
 test-results/
 allure-results/
 allure-report/
+.ai/mcp-output/
+.codex/playwright-mcp-output/
 .env
 npm-debug.log*

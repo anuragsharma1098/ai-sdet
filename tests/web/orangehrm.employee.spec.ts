@@ -4,8 +4,13 @@ import { createEmployeeData } from '../../src/data/testDataFactory';
 import { LoginPage } from '../../src/pages/LoginPage';
 import { PimPage } from '../../src/pages/PimPage';
 
+/**
+ * End-to-end OrangeHRM PIM scenario covering employee create, search, update,
+ * delete, and post-delete isolation of a second employee record.
+ */
 test.describe('Question #1: OrangeHRM web automation', () => {
   test('creates, validates, updates, deletes, and verifies employee records', async ({ page }) => {
+    // Each run uses unique employee IDs/names to avoid collisions in the shared demo app.
     const employeeOne = createEmployeeData();
     const employeeTwo = createEmployeeData();
     const updatedEmployeeOne = createEmployeeData();

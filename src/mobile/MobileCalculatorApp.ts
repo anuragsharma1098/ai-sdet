@@ -1,5 +1,6 @@
 import type { MobileSession } from './mobileDriver';
 
+/** Maps calculation tokens to Google Android Calculator resource IDs. */
 const androidButtonIds: Record<string, string> = {
   '0': 'digit_0',
   '1': 'digit_1',
@@ -21,9 +22,11 @@ const androidButtonIds: Record<string, string> = {
   ')': 'rparen'
 };
 
+/** High-level Android Calculator actions built on an Appium UiAutomator2 session. */
 export class MobileCalculatorApp {
   constructor(private readonly app: MobileSession) {}
 
+  /** Enters the supplied token sequence, evaluates it, and returns display text. */
   async calculate(tokens: string[]): Promise<string> {
     await this.clear();
     for (const token of tokens) {
@@ -33,6 +36,7 @@ export class MobileCalculatorApp {
     return this.result();
   }
 
+  /** Clears calculator history when the device/app variant exposes that menu. */
   async clearHistory(): Promise<void> {
     await this.clear();
     const moreOptions = await this.app.$('~More options');
@@ -56,6 +60,7 @@ export class MobileCalculatorApp {
     }
   }
 
+  /** Clears the current expression if the clear button is present. */
   private async clear(): Promise<void> {
     const clearButton = await this.app.$(this.byId(androidButtonIds.C));
     if (await clearButton.isExisting()) {
@@ -63,6 +68,7 @@ export class MobileCalculatorApp {
     }
   }
 
+  /** Expands multi-digit tokens into individual calculator taps. */
   private async tapToken(token: string): Promise<void> {
     if (/^\d+$/.test(token)) {
       for (const digit of token) {
@@ -74,6 +80,7 @@ export class MobileCalculatorApp {
     await this.tap(token);
   }
 
+  /** Taps a calculator control by resource ID and fails fast on unsupported tokens. */
   private async tap(symbol: string): Promise<void> {
     const id = androidButtonIds[symbol];
     if (!id) {
@@ -82,6 +89,7 @@ export class MobileCalculatorApp {
     await this.app.$(this.byId(id)).click();
   }
 
+  /** Reads the final result, falling back for calculator versions with older IDs. */
   private async result(): Promise<string> {
     const result = await this.app.$(this.byId('result_final'));
     if (await result.isExisting()) {
@@ -91,6 +99,7 @@ export class MobileCalculatorApp {
     return this.app.$(this.byId('result')).getText();
   }
 
+  /** Builds a Google Calculator resource-id selector. */
   private byId(id: string): string {
     return `id=com.google.android.calculator:id/${id}`;
   }

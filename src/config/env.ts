@@ -1,3 +1,9 @@
+/**
+ * Centralized runtime configuration.
+ *
+ * Defaults support the public demo apps and local Appium usage while allowing CI,
+ * cloud devices, or host-specific credentials to override values through env vars.
+ */
 export const env = {
   orangeUsername: process.env.ORANGE_USERNAME ?? 'Admin',
   orangePassword: process.env.ORANGE_PASSWORD ?? 'admin123',

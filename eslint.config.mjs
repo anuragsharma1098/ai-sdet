@@ -3,6 +3,8 @@ import tseslint from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 import prettier from 'eslint-config-prettier';
 
+// Flat ESLint config for TypeScript source and tests. Generated reports are ignored
+// so local and CI quality checks focus on maintainable project code.
 export default [
   {
     ignores: [

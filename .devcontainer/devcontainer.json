@@ -11,7 +11,17 @@
       "extensions": [
         "ms-playwright.playwright",
         "ms-vscode.vscode-typescript-next",
-        "dbaeumer.vscode-eslint"
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "editorconfig.editorconfig",
+        "eamodio.gitlens",
+        "github.vscode-pull-request-github",
+        "github.vscode-github-actions",
+        "redhat.vscode-yaml",
+        "davidanson.vscode-markdownlint",
+        "ms-azuretools.vscode-docker",
+        "ms-vscode-remote.remote-containers",
+        "cweijan.vscode-office"
       ],
       "settings": {
         "typescript.tsdk": "node_modules/typescript/lib",

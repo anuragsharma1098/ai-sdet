@@ -1,14 +1,23 @@
 import { expect, type APIRequestContext, type APIResponse } from '@playwright/test';
 import type { BookingData } from '../data/testDataFactory';
 
+/** Response shape returned by RESTful Booker after creating a booking. */
 export type BookingResponse = {
   bookingid: number;
   booking: BookingData;
 };
 
+/**
+ * Typed wrapper around RESTful Booker endpoints.
+ *
+ * Positive methods assert expected status codes and deserialize response bodies.
+ * Raw methods return APIResponse so negative scenarios can validate status codes
+ * without failing early inside the client.
+ */
 export class RestfulBookerClient {
   constructor(private readonly request: APIRequestContext) {}
 
+  /** Creates an auth token used by update and delete requests. */
   async createToken(): Promise<string> {
     const response = await this.request.post('https://restful-booker.herokuapp.com/auth', {
       data: {
@@ -23,6 +32,7 @@ export class RestfulBookerClient {
     return body.token;
   }
 
+  /** Creates a booking and validates the response echoes the submitted payload. */
   async createBooking(data: BookingData): Promise<BookingResponse> {
     const response = await this.request.post('https://restful-booker.herokuapp.com/booking', { data });
     expect(response.status()).toBe(200);
@@ -32,12 +42,14 @@ export class RestfulBookerClient {
     return body;
   }
 
+  /** Retrieves a booking and returns the normalized booking payload. */
   async getBooking(bookingId: number): Promise<BookingData> {
     const response = await this.request.get(`https://restful-booker.herokuapp.com/booking/${bookingId}`);
     expect(response.status()).toBe(200);
     return (await response.json()) as BookingData;
   }
 
+  /** Updates a booking using token authentication and returns the saved payload. */
   async updateBooking(bookingId: number, token: string, data: BookingData): Promise<BookingData> {
     const response = await this.request.put(`https://restful-booker.herokuapp.com/booking/${bookingId}`, {
       headers: this.authHeaders(token),
@@ -47,20 +59,24 @@ export class RestfulBookerClient {
     return (await response.json()) as BookingData;
   }
 
+  /** Deletes a booking using token authentication. */
   async deleteBooking(bookingId: number, token: string): Promise<APIResponse> {
     return this.request.delete(`https://restful-booker.herokuapp.com/booking/${bookingId}`, {
       headers: this.authHeaders(token)
     });
   }
 
+  /** Returns the raw GET response for status polling and negative assertions. */
   async getRawBooking(bookingId: number): Promise<APIResponse> {
     return this.request.get(`https://restful-booker.herokuapp.com/booking/${bookingId}`);
   }
 
+  /** Sends an untyped POST payload for invalid-data negative scenarios. */
   async postRawBooking(data: unknown): Promise<APIResponse> {
     return this.request.post('https://restful-booker.herokuapp.com/booking', { data });
   }
 
+  /** Sends an untyped PUT payload for authorization and invalid-data checks. */
   async putRawBooking(bookingId: number, token: string | undefined, data: unknown): Promise<APIResponse> {
     return this.request.put(`https://restful-booker.herokuapp.com/booking/${bookingId}`, {
       headers: token ? this.authHeaders(token) : undefined,
@@ -68,12 +84,14 @@ export class RestfulBookerClient {
     });
   }
 
+  /** Sends a DELETE request with optional auth for authorization scenarios. */
   async deleteRawBooking(bookingId: number, token?: string): Promise<APIResponse> {
     return this.request.delete(`https://restful-booker.herokuapp.com/booking/${bookingId}`, {
       headers: token ? this.authHeaders(token) : undefined
     });
   }
 
+  /** Builds RESTful Booker token headers used by protected endpoints. */
   private authHeaders(token: string) {
     return {
       Cookie: `token=${token}`,

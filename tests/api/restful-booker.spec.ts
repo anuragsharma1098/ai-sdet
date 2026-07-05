@@ -3,10 +3,16 @@ import { RestfulBookerClient, type BookingResponse } from '../../src/api/Restful
 import { getValidatedAiData } from '../../src/data/aiDataValidator';
 import { createBookingData } from '../../src/data/testDataFactory';
 
+/**
+ * RESTful Booker suite covering CRUD behavior plus AI-generated negative cases.
+ * The positive flow keeps created records in memory so update/delete/isolation
+ * assertions can target exact records from the same run.
+ */
 test.describe('Question #2 and #5: RESTful Booker API automation', () => {
   test('creates multiple bookings, retrieves, updates, deletes, and validates records', async ({
     request
   }) => {
+    // AI-generated templates are validated with Zod before any request uses them.
     const aiData = getValidatedAiData();
     const client = new RestfulBookerClient(request);
     const token = await client.createToken();
@@ -49,6 +55,7 @@ test.describe('Question #2 and #5: RESTful Booker API automation', () => {
     const token = await client.createToken();
     const booking = await client.createBooking(createBookingData());
 
+    // Each generated negative scenario owns its expected status contract.
     for (const scenario of aiData.negativeScenarios) {
       let status: number;
 

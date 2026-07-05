@@ -11,6 +11,7 @@ The container includes:
 - npm project dependencies through `npm install`
 - Allure CLI and reporter from project dev dependencies
 - Codex CLI from project dev dependencies
+- VS Code extensions for Playwright, TypeScript, ESLint, Prettier, EditorConfig, GitLens, GitHub Pull Requests, GitHub Actions, YAML, Markdown linting, Docker, Dev Containers, and Office Viewer
 - Appium 2
 - Appium UiAutomator2 driver
 - Android Debug Bridge tools

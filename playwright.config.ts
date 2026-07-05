@@ -1,5 +1,10 @@
 import { defineConfig, devices } from '@playwright/test';
 
+/**
+ * Shared Playwright Test configuration for web, API, desktop, and mobile specs.
+ * Desktop and mobile are excluded from npm test by tags because they require
+ * external host/device infrastructure.
+ */
 export default defineConfig({
   testDir: './tests',
   timeout: 120_000,
@@ -10,6 +15,7 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
   workers: 1,
+  // Multiple reporters support local debugging, CI parsing, and Allure dashboards.
   reporter: [
     ['list'],
     ['html', { open: 'never' }],
@@ -19,6 +25,7 @@ export default defineConfig({
   ],
   use: {
     baseURL: 'https://opensource-demo.orangehrmlive.com',
+    // Failure artifacts are retained to support review and debugging without reruns.
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',

@@ -20,6 +20,7 @@ Enterprise-oriented Playwright + TypeScript automation framework covering:
 - Android emulator, physical device, or cloud device for mobile execution
 - Allure CLI through `allure-commandline`; report generation requires Java, installed by the devcontainer and CI system dependency script
 - Codex CLI through `@openai/codex`
+- VS Code extensions installed by the devcontainer for Playwright, TypeScript, ESLint, Prettier, EditorConfig, GitLens, GitHub Pull Requests, GitHub Actions, YAML, Markdown linting, Docker, Dev Containers, and Office Viewer
 
 ## Setup
 
@@ -34,7 +35,7 @@ This repository includes a VS Code devcontainer in `.devcontainer`.
 
 Open the folder in VS Code and select **Dev Containers: Reopen in Container**. The container installs npm dependencies and Chromium automatically through `postCreateCommand`.
 
-The devcontainer includes Playwright browser dependencies, Appium, UiAutomator2, ADB, a headless Java runtime, and the npm dependencies from `package.json`. Codex and Allure are installed as project dev dependencies during `npm install`.
+The devcontainer includes Playwright browser dependencies, Appium, UiAutomator2, ADB, a headless Java runtime, recommended VS Code extensions, and the npm dependencies from `package.json`. Codex and Allure are installed as project dev dependencies during `npm install`.
 
 Native Windows desktop automation cannot execute inside the Linux devcontainer because Calculator and Notepad require a Windows GUI session. Run desktop tests from a Windows host or point the tests at a reachable Windows Appium endpoint.
 
@@ -114,6 +115,8 @@ npm run report:allure:open
 
 ## Framework Design
 
+Board-facing architecture and presentation material: `docs/ARCHITECTURE_TSD.md`.
+
 - `src/pages`: Page Object Model for OrangeHRM web flows.
 - `src/api`: typed REST clients and API helpers.
 - `src/data`: dynamic data factories and AI output validation.
@@ -149,3 +152,27 @@ The file `artifacts/ai/ai-generated-test-data.json` contains AI-generated API bo
 - Desktop automation is implemented but requires Windows host infrastructure.
 - Mobile automation is implemented for Android Calculator and requires Appium plus a connected device, emulator, or cloud device.
 - Public demo applications can be slower than local systems; the framework uses Playwright assertions and targeted readiness checks instead of fixed waits.
+
+## AI Development With Any AI Agent
+
+This repository includes shared, agent-neutral AI guidance:
+
+- `.ai/agent-guide.md`: repository expectations, commands, architecture rules, and verification rules.
+- `.ai/skills.md`: workflow routing for framework, web, API, desktop, mobile, and docs work.
+- `.ai/mcp.json`: portable MCP server config shape for Claude, Cursor, and other MCP clients.
+- `AGENTS.md`: Codex-compatible entry point that points back to `.ai`.
+- `.codex/config.toml`: Codex-specific project MCP wiring.
+
+Recommended bootstrap prompt for any AI agent:
+
+```text
+Before changing this repository, read .ai/agent-guide.md and .ai/skills.md. Use .ai/mcp.json if your client supports MCP. Follow the verification rules in the shared guide.
+```
+
+Playwright MCP is installed as a dev dependency. Run it locally with:
+
+```bash
+npm run mcp:playwright
+```
+
+For Codex, restart after changing `.codex/config.toml` and use `/mcp` to confirm the `playwright` MCP server is available. For Claude or other MCP clients, copy or reference `.ai/mcp.json` in that client's MCP settings.

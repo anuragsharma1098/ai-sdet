@@ -1,5 +1,6 @@
 import type { WindowsSession } from './windowsDriver';
 
+/** Maps calculation tokens to Windows Calculator automation IDs. */
 const calculatorButtons: Record<string, string> = {
   '0': 'num0Button',
   '1': 'num1Button',
@@ -19,9 +20,11 @@ const calculatorButtons: Record<string, string> = {
   C: 'clearButton'
 };
 
+/** High-level Windows Calculator actions built on an Appium/WinAppDriver session. */
 export class CalculatorApp {
   constructor(private readonly app: WindowsSession) {}
 
+  /** Enters the supplied token sequence, evaluates it, and returns display text. */
   async calculate(tokens: string[]): Promise<string> {
     await this.press('C');
     for (const token of tokens) {
@@ -31,6 +34,7 @@ export class CalculatorApp {
     return this.result();
   }
 
+  /** Expands multi-digit tokens into individual calculator button presses. */
   private async pressToken(token: string): Promise<void> {
     if (/^\d+$/.test(token)) {
       for (const digit of token) {
@@ -42,6 +46,7 @@ export class CalculatorApp {
     await this.press(token);
   }
 
+  /** Presses a calculator button by stable accessibility ID. */
   private async press(symbol: string): Promise<void> {
     const automationId = calculatorButtons[symbol];
     if (!automationId) {
@@ -50,6 +55,7 @@ export class CalculatorApp {
     await this.app.$(`accessibility id:${automationId}`).click();
   }
 
+  /** Normalizes the Windows Calculator display text to the raw result value. */
   private async result(): Promise<string> {
     const display = await this.app.$('accessibility id:CalculatorResults').getText();
     return display.replace(/^Display is\s*/i, '').trim();

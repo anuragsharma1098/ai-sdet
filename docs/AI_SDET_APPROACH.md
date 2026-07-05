@@ -44,3 +44,7 @@ The AI artifact is validated by `src/data/aiDataValidator.ts` using a Zod schema
 - API payloads are typed through shared data contracts.
 - Desktop and mobile execution are separated from the default suite because they require external infrastructure.
 - Generated report folders are ignored by Git, Prettier, and ESLint.
+
+## Architecture Presentation
+
+A board-facing technical solution design with Mermaid diagrams is available in `docs/ARCHITECTURE_TSD.md`.

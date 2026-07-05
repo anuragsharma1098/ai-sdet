@@ -1,0 +1,20 @@
+# Project-scoped Codex configuration for this AI-SDET framework.
+# Codex loads this for trusted projects; restart Codex after changing MCP config.
+
+[mcp_servers.playwright]
+command = "npx"
+args = [
+  "playwright-mcp",
+  "--headless",
+  "--isolated",
+  "--output-dir",
+  ".codex/playwright-mcp-output",
+  "--timeout-action",
+  "10000",
+  "--timeout-navigation",
+  "60000"
+]
+startup_timeout_sec = 20
+tool_timeout_sec = 120
+enabled = true
+default_tools_approval_mode = "prompt"
