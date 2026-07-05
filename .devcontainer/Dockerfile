@@ -2,12 +2,9 @@ FROM mcr.microsoft.com/playwright:v1.61.0-noble
 
 USER root
 
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-      default-jdk \
-      android-tools-adb \
-      zip \
-    && rm -rf /var/lib/apt/lists/*
+COPY .devcontainer/install-system-deps.sh /tmp/install-system-deps.sh
+RUN bash /tmp/install-system-deps.sh \
+    && rm /tmp/install-system-deps.sh
 
 RUN npm install -g appium@latest \
     && appium driver install uiautomator2
