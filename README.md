@@ -24,7 +24,16 @@ Enterprise-oriented Playwright + TypeScript automation framework covering:
 
 ## Setup
 
+PowerShell:
+
 ```powershell
+npm install
+npx playwright install chromium
+```
+
+Bash (Linux/macOS):
+
+```bash
 npm install
 npx playwright install chromium
 ```
@@ -43,7 +52,18 @@ Native Windows desktop automation cannot execute inside the Linux devcontainer b
 
 The project includes Prettier, ESLint, Husky, lint-staged, strict TypeScript, and GitHub Actions.
 
+PowerShell:
+
 ```powershell
+npm run format
+npm run format:check
+npm run lint
+npm run typecheck
+```
+
+Bash (Linux/macOS):
+
+```bash
 npm run format
 npm run format:check
 npm run lint
@@ -56,49 +76,113 @@ Husky runs `lint-staged` before commits after dependencies are installed.
 
 Run the default CI-safe suite. This runs web and API tests only; desktop and mobile are excluded because they require host or device infrastructure.
 
+PowerShell:
+
 ```powershell
+npm test
+```
+
+Bash (Linux/macOS):
+
+```bash
 npm test
 ```
 
 Run only web:
 
+PowerShell:
+
 ```powershell
+npm run test:web
+```
+
+Bash (Linux/macOS):
+
+```bash
 npm run test:web
 ```
 
 Run only API:
 
+PowerShell:
+
 ```powershell
+npm run test:api
+```
+
+Bash (Linux/macOS):
+
+```bash
 npm run test:api
 ```
 
 Run desktop tests from a Windows host or Windows Appium endpoint:
 
+PowerShell:
+
 ```powershell
+npm run test:desktop
+```
+
+Bash (Linux/macOS, against a reachable Windows Appium endpoint only):
+
+```bash
 npm run test:desktop
 ```
 
 Run mobile tests after Appium and an Android emulator, physical device, or cloud device are available:
 
+PowerShell:
+
 ```powershell
+npm run test:mobile
+```
+
+Bash (Linux/macOS):
+
+```bash
 npm run test:mobile
 ```
 
 Open Playwright HTML report:
 
+PowerShell:
+
 ```powershell
+npm run report
+```
+
+Bash (Linux/macOS):
+
+```bash
 npm run report
 ```
 
 Generate Allure report:
 
+PowerShell:
+
 ```powershell
+npm run report:allure
+```
+
+Bash (Linux/macOS):
+
+```bash
 npm run report:allure
 ```
 
 Open generated Allure report:
 
+PowerShell:
+
 ```powershell
+npm run report:allure:open
+```
+
+Bash (Linux/macOS):
+
+```bash
 npm run report:allure:open
 ```
 
