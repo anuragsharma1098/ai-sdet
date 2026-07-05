@@ -1,8 +1,8 @@
 {
-  "name": "ai-sdet-assignment-playwright-typescript",
+  "name": "ai-sdet-playwright-typescript",
   "version": "1.0.0",
   "private": true,
-  "description": "AI-SDET assignment automation framework using Playwright and TypeScript.",
+  "description": "AI-SDET automation framework using Playwright and TypeScript.",
   "scripts": {
     "prepare": "husky",
     "clean:allure": "node -e \"const fs=require('fs'); for (const path of ['allure-results','allure-report']) fs.rmSync(path,{recursive:true,force:true});\"",

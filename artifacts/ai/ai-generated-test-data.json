@@ -1,7 +1,7 @@
 {
   "tool": "ChatGPT / Codex",
   "generatedAt": "2026-07-05T14:10:00.000Z",
-  "prompt": "Generate RESTful Booker dynamic booking templates and negative API test scenarios for an AI-SDET automation assignment.",
+  "prompt": "Generate RESTful Booker dynamic booking templates and negative API test scenarios for an AI-SDET automation framework.",
   "bookingTemplates": [
     {
       "firstname": "Ava",

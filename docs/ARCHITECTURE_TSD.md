@@ -8,7 +8,7 @@ The default CI path intentionally runs only web and API tests because those are 
 
 ## Board-Level Outcomes
 
-- One framework covers five assignment areas: web, API, desktop, mobile, and AI-assisted test generation.
+- One framework covers five areas: web, API, desktop, mobile, and AI-assisted test generation.
 - Tests produce reviewable reports through Playwright HTML, JSON, JUnit, and Allure.
 - AI-generated data is not trusted blindly; it is schema-validated before use.
 - CI enforces formatting, linting, type safety, default test execution, and report artifact upload.
@@ -190,7 +190,7 @@ Playwright Test is the common runner for all capabilities. This gives one report
 
 ### 2. Default CI Is Stable By Design
 
-`npm test` excludes `@desktop` and `@mobile` because those suites require external infrastructure. This keeps pull-request feedback reliable while preserving full assignment coverage through explicit scripts.
+`npm test` excludes `@desktop` and `@mobile` because those suites require external infrastructure. This keeps pull-request feedback reliable while preserving full coverage through explicit scripts.
 
 ### 3. Page Objects Own Web Complexity
 

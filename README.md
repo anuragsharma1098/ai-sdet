@@ -1,4 +1,4 @@
-# AI-SDET Assignment Automation
+# AI-SDET Automation
 
 Enterprise-oriented Playwright + TypeScript automation framework covering:
 
@@ -206,7 +206,7 @@ Board-facing architecture and presentation material: `docs/ARCHITECTURE_TSD.md`.
 - `src/data`: dynamic data factories and AI output validation.
 - `src/desktop`: Windows Calculator and Notepad automation helpers.
 - `src/mobile`: native Android Calculator automation helpers.
-- `tests`: Playwright specs grouped by assignment question and capability.
+- `tests`: Playwright specs grouped by capability.
 - `artifacts/ai`: stored AI-generated data and scenarios consumed by tests.
 - `.github/workflows`: CI quality gates, default test execution, and report artifact upload.
 
