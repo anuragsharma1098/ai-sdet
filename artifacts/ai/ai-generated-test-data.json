@@ -1,0 +1,68 @@
+{
+  "tool": "ChatGPT / Codex",
+  "generatedAt": "2026-07-05T14:10:00.000Z",
+  "prompt": "Generate RESTful Booker dynamic booking templates and negative API test scenarios for an AI-SDET automation assignment.",
+  "bookingTemplates": [
+    {
+      "firstname": "Ava",
+      "lastname": "Sharma",
+      "totalprice": 275,
+      "depositpaid": true,
+      "bookingdates": {
+        "checkin": "2026-08-12",
+        "checkout": "2026-08-16"
+      },
+      "additionalneeds": "Breakfast"
+    },
+    {
+      "firstname": "Noah",
+      "lastname": "Patel",
+      "totalprice": 410,
+      "depositpaid": false,
+      "bookingdates": {
+        "checkin": "2026-09-03",
+        "checkout": "2026-09-09"
+      },
+      "additionalneeds": "Airport pickup"
+    }
+  ],
+  "negativeScenarios": [
+    {
+      "name": "missing required firstname",
+      "method": "POST",
+      "payload": {
+        "lastname": "MissingFirstName",
+        "totalprice": 120,
+        "depositpaid": true,
+        "bookingdates": {
+          "checkin": "2026-08-01",
+          "checkout": "2026-08-03"
+        },
+        "additionalneeds": "Breakfast"
+      },
+      "expectedStatuses": [400, 500]
+    },
+    {
+      "name": "invalid auth token during update",
+      "method": "PUT",
+      "payload": {
+        "firstname": "Unauthorized",
+        "lastname": "Update",
+        "totalprice": 150,
+        "depositpaid": true,
+        "bookingdates": {
+          "checkin": "2026-08-10",
+          "checkout": "2026-08-11"
+        },
+        "additionalneeds": "Dinner"
+      },
+      "expectedStatuses": [403]
+    },
+    {
+      "name": "delete without token",
+      "method": "DELETE",
+      "payload": {},
+      "expectedStatuses": [403]
+    }
+  ]
+}

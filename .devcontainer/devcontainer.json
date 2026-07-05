@@ -1,0 +1,41 @@
+{
+  "name": "AI-SDET Playwright TypeScript",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "workspaceFolder": "/workspaces/ai-sdet",
+  "remoteUser": "pwuser",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-playwright.playwright",
+        "ms-vscode.vscode-typescript-next",
+        "dbaeumer.vscode-eslint"
+      ],
+      "settings": {
+        "typescript.tsdk": "node_modules/typescript/lib",
+        "terminal.integrated.defaultProfile.linux": "bash"
+      }
+    }
+  },
+  "containerEnv": {
+    "ORANGE_USERNAME": "Admin",
+    "ORANGE_PASSWORD": "admin123",
+    "APPIUM_HOST": "127.0.0.1",
+    "APPIUM_PORT": "4723",
+    "ANDROID_DEVICE_NAME": "Android Emulator"
+  },
+  "forwardPorts": [4723, 9323],
+  "portsAttributes": {
+    "4723": {
+      "label": "Appium"
+    },
+    "9323": {
+      "label": "Playwright HTML Report"
+    }
+  },
+  "postCreateCommand": "npm install && npx playwright install chromium",
+  "postAttachCommand": "npm run typecheck",
+  "features": {}
+}
