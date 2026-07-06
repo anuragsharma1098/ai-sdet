@@ -190,17 +190,21 @@ Playwright Test is the common runner for all capabilities. This gives one report
 
 ### 2. Default CI Is Stable By Design
 
-`npm test` excludes `@desktop` and `@mobile` because those suites require external infrastructure. This keeps pull-request feedback reliable while preserving full coverage through explicit scripts.
+`npm test` excludes `@desktop` and `@mobile` because those suites require external infrastructure. CI routes push and pull-request runs through the `dev` target by default, while manual workflow runs can select `dev`, `qa`, or `prd`. This keeps pull-request feedback reliable while preserving full coverage through explicit scripts.
 
 ### 3. Page Objects Own Web Complexity
 
 OrangeHRM selectors, form synchronization, and UI-specific waits live in `src/pages`. Specs remain scenario-focused and readable for review.
 
-### 4. AI Output Is Validated Before Use
+### 4. Environment Selection Is Centralized
+
+`src/config/env.ts` owns target selection for `dev`, `qa`, and `prd`. Playwright, API clients, and Appium helpers read URLs, credentials, and host/device settings from that shared config so tests do not embed environment-specific details.
+
+### 5. AI Output Is Validated Before Use
 
 Generated booking templates and negative scenarios are stored as artifacts but must pass a Zod schema before tests consume them. This creates a controlled AI-assisted workflow rather than trusting generated content blindly.
 
-### 5. Reporting Is Multi-Audience
+### 6. Reporting Is Multi-Audience
 
 HTML and Allure reports support human review; JSON and JUnit support CI and downstream tooling; traces, screenshots, and videos support failure diagnosis.
 
@@ -212,7 +216,7 @@ flowchart TD
   Quality --> Format[npm run format:check]
   Quality --> Lint[npm run lint]
   Quality --> Typecheck[npm run typecheck]
-  Quality --> DefaultTests[npm test]
+  Quality --> DefaultTests[npm run test:dev]
 
   DefaultTests --> WebAPI[Web + API]
   WebAPI --> Reports[Reports Uploaded]
@@ -228,6 +232,7 @@ flowchart TD
 | Risk                                                            | Mitigation                                                                                                     |
 | --------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
 | Public demo apps can be slow or change UI markup.               | Use resilient locators, assertion-based synchronization, Playwright traces, and Playwright MCP for inspection. |
+| Dev, QA, and PRD targets can drift.                             | Select targets through `TEST_ENV` and keep per-environment overrides outside test code.                        |
 | Desktop tests require Windows GUI infrastructure.               | Keep desktop suite tagged `@desktop` and outside default Linux CI.                                             |
 | Mobile tests require Appium and a device/emulator/cloud target. | Keep mobile suite tagged `@mobile` and configurable through env vars.                                          |
 | AI-generated data may be malformed.                             | Validate all AI artifacts with Zod before use.                                                                 |
@@ -237,8 +242,8 @@ flowchart TD
 ## Presentation Talk Track
 
 1. The framework consolidates web, API, desktop, mobile, and AI-assisted testing into one TypeScript automation platform.
-2. The architecture separates scenario intent from implementation mechanics through page objects, typed clients, data factories, and platform helpers.
-3. CI is intentionally stable: it runs quality gates and web/API tests, then publishes Playwright and Allure artifacts.
+2. The architecture separates scenario intent from implementation mechanics through page objects, typed clients, data factories, environment config, and platform helpers.
+3. CI is intentionally stable: it runs quality gates and dev-targeted web/API tests, then publishes Playwright and Allure artifacts.
 4. Desktop and mobile are implemented but executed only when the correct infrastructure is available, reducing noisy CI failures.
 5. AI is used responsibly: generated data is versioned as an artifact and validated before automation consumes it.
 6. The repository is ready for AI-assisted maintenance across Codex, Claude, Cursor, and similar tools through shared `.ai` guidance and MCP configuration.

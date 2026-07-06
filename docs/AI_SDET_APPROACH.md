@@ -8,8 +8,9 @@ The project uses Playwright Test as the common TypeScript test runner and report
 - API tests use Playwright `APIRequestContext` with a typed reusable REST client under `src/api`.
 - Desktop tests use Appium or WinAppDriver sessions from Playwright specs because native Windows apps are outside Playwright browser automation.
 - Mobile tests use Appium UiAutomator2 sessions from Playwright specs for native Android Calculator automation.
+- Runtime target selection is centralized in `src/config/env.ts`; `TEST_ENV` selects `dev`, `qa`, or `prd`, while global or environment-specific variables override URLs, credentials, and device settings.
 - Dynamic data factories and AI output validation live in `src/data` and are isolated from test flow logic.
-- CI runs formatting, lint, typecheck, and the default web plus API suite before uploading reports.
+- CI runs formatting, lint, typecheck, and the default web plus API suite before uploading reports. Push and pull-request runs target `dev`; manual workflow runs can select `dev`, `qa`, or `prd`.
 
 ## Reporting Approach
 
@@ -41,6 +42,7 @@ The AI artifact is validated by `src/data/aiDataValidator.ts` using a Zod schema
 
 - Page objects and app helpers own selectors and app-specific synchronization.
 - Tests describe business scenarios and delegate implementation details to reusable helpers.
+- Environment-specific app URLs and credentials are read from typed configuration instead of being embedded in tests or clients.
 - API payloads are typed through shared data contracts.
 - Desktop and mobile execution are separated from the default suite because they require external infrastructure.
 - Generated report folders are ignored by Git, Prettier, and ESLint.

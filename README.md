@@ -88,6 +88,24 @@ Bash (Linux/macOS):
 npm test
 ```
 
+Run the same CI-safe suite against a named target environment:
+
+PowerShell:
+
+```powershell
+npm run test:dev
+npm run test:qa
+npm run test:prd
+```
+
+Bash (Linux/macOS):
+
+```bash
+npm run test:dev
+npm run test:qa
+npm run test:prd
+```
+
 Run only web:
 
 PowerShell:
@@ -188,14 +206,31 @@ npm run report:allure:open
 
 ## Environment Variables
 
-| Variable                   | Default            | Purpose                           |
-| -------------------------- | ------------------ | --------------------------------- |
-| `ORANGE_USERNAME`          | `Admin`            | OrangeHRM login username          |
-| `ORANGE_PASSWORD`          | `admin123`         | OrangeHRM login password          |
-| `APPIUM_HOST`              | `127.0.0.1`        | Appium server host                |
-| `APPIUM_PORT`              | `4723`             | Appium server port                |
-| `ANDROID_DEVICE_NAME`      | `Android Emulator` | Mobile device name                |
-| `ANDROID_PLATFORM_VERSION` | unset              | Optional Android platform version |
+`TEST_ENV` selects the active target environment. Supported values are `dev`, `qa`, and `prd`; `prod` is accepted as an alias for `prd`. The default is `dev`.
+
+The checked-in defaults point every environment at the same public demo apps. For real systems, set global variables such as `ORANGE_BASE_URL`, or environment-specific variables such as `QA_ORANGE_BASE_URL`. Environment-specific values win over global values.
+
+| Variable                   | Default                                     | Purpose                           |
+| -------------------------- | ------------------------------------------- | --------------------------------- |
+| `TEST_ENV`                 | `dev`                                       | Active target environment         |
+| `ORANGE_BASE_URL`          | `https://opensource-demo.orangehrmlive.com` | OrangeHRM base URL                |
+| `ORANGE_USERNAME`          | `Admin`                                     | OrangeHRM login username          |
+| `ORANGE_PASSWORD`          | `admin123`                                  | OrangeHRM login password          |
+| `RESTFUL_BOOKER_BASE_URL`  | `https://restful-booker.herokuapp.com`      | RESTful Booker base URL           |
+| `RESTFUL_BOOKER_USERNAME`  | `admin`                                     | RESTful Booker auth username      |
+| `RESTFUL_BOOKER_PASSWORD`  | `password123`                               | RESTful Booker auth password      |
+| `APPIUM_HOST`              | `127.0.0.1`                                 | Appium server host                |
+| `APPIUM_PORT`              | `4723`                                      | Appium server port                |
+| `ANDROID_DEVICE_NAME`      | `Android Emulator`                          | Mobile device name                |
+| `ANDROID_PLATFORM_VERSION` | unset                                       | Optional Android platform version |
+
+Environment-specific overrides use the environment prefix:
+
+| Prefix | Example                      |
+| ------ | ---------------------------- |
+| `DEV_` | `DEV_ORANGE_BASE_URL`        |
+| `QA_`  | `QA_RESTFUL_BOOKER_BASE_URL` |
+| `PRD_` | `PRD_ORANGE_USERNAME`        |
 
 ## Framework Design
 
@@ -222,7 +257,7 @@ Playwright is configured to generate:
 
 `npm test` runs `npm run clean:allure` first, removing previous `allure-results` and `allure-report` folders before a fresh run. Generate the browsable Allure report with `npm run report:allure`; it writes to `allure-report`.
 
-CI installs shared system dependencies from `.devcontainer/install-system-deps.sh`, including the headless Java runtime required by Allure, then uploads Playwright reports, raw test results, Allure results, and the generated Allure report as artifacts.
+CI installs shared system dependencies from `.devcontainer/install-system-deps.sh`, including the headless Java runtime required by Allure. Push and pull-request runs execute the CI-safe web/API suite against `dev` by default; manual workflow runs can select `dev`, `qa`, or `prd`. CI uploads Playwright reports, raw test results, Allure results, and the generated Allure report as environment-named artifacts.
 
 Screenshots, traces, videos, and Allure artifacts are retained on failure.
 

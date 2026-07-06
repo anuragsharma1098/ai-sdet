@@ -1,4 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
+import { env } from './src/config/env';
 
 /**
  * Shared Playwright Test configuration for web, API, desktop, and mobile specs.
@@ -24,7 +25,7 @@ export default defineConfig({
     ['allure-playwright', { outputFolder: 'allure-results' }]
   ],
   use: {
-    baseURL: 'https://opensource-demo.orangehrmlive.com',
+    baseURL: env.orangeBaseUrl,
     // Failure artifacts are retained to support review and debugging without reruns.
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',

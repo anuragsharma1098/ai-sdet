@@ -6,10 +6,23 @@ on:
   pull_request:
     branches: [main, develop]
   workflow_dispatch:
+    inputs:
+      test_environment:
+        description: Target environment for web and API tests
+        type: choice
+        required: true
+        default: dev
+        options:
+          - dev
+          - qa
+          - prd
+
+env:
+  TEST_ENV: ${{ github.event_name == 'workflow_dispatch' && inputs.test_environment || 'dev' }}
 
 jobs:
   quality-and-tests:
-    name: Quality and Playwright Tests
+    name: Quality and Playwright Tests (${{ github.event_name == 'workflow_dispatch' && inputs.test_environment || 'dev' }})
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright:v1.61.0-noble
@@ -34,6 +47,9 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Show target environment
+        run: echo "Running CI-safe web/API tests against TEST_ENV=${TEST_ENV}"
+
       - name: Check formatting
         run: npm run format:check
 
@@ -44,13 +60,13 @@ jobs:
         run: npm run typecheck
 
       - name: Run web and API tests
-        run: npm test
+        run: npm run test:${TEST_ENV}
 
       - name: Upload Playwright report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-report
+          name: playwright-report-${{ env.TEST_ENV }}
           path: playwright-report/
           if-no-files-found: ignore
 
@@ -58,7 +74,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: test-results
+          name: test-results-${{ env.TEST_ENV }}
           path: test-results/
           if-no-files-found: ignore
 
@@ -70,7 +86,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: allure-results
+          name: allure-results-${{ env.TEST_ENV }}
           path: allure-results/
           if-no-files-found: ignore
 
@@ -78,6 +94,6 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: allure-report
+          name: allure-report-${{ env.TEST_ENV }}
           path: allure-report/
           if-no-files-found: ignore
