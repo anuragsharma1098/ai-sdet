@@ -13,14 +13,21 @@ test.describe('Question #3: Windows desktop automation @desktop', () => {
   test('calculates results, saves summary in Notepad, and validates reopened file', async () => {
     // Timestamped files make repeated local or review runs non-destructive.
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-    const filePath = join(process.cwd(), 'artifacts', 'desktop', `calculator-summary-${timestamp}.txt`);
+    const filePath = join(
+      process.cwd(),
+      'artifacts',
+      'desktop',
+      `calculator-summary-${timestamp}.txt`
+    );
     const calculations = [
       { expression: '25 + 15', tokens: ['25', '+', '15'], expected: '40' },
       { expression: '144 / 12', tokens: ['144', '/', '12'], expected: '12' },
       { expression: '9 * 8 - 7', tokens: ['9', '*', '8', '-', '7'], expected: '65' }
     ];
 
-    const calculatorSession = await createWindowsSession('Microsoft.WindowsCalculator_8wekyb3d8bbwe!App');
+    const calculatorSession = await createWindowsSession(
+      'Microsoft.WindowsCalculator_8wekyb3d8bbwe!App'
+    );
     const calculator = new CalculatorApp(calculatorSession);
     const results: string[] = [];
 
@@ -52,7 +59,10 @@ test.describe('Question #3: Windows desktop automation @desktop', () => {
 
     expect(existsSync(filePath)).toBe(true);
 
-    const reopenedSession = await createWindowsSession('C:\\Windows\\System32\\notepad.exe', filePath);
+    const reopenedSession = await createWindowsSession(
+      'C:\\Windows\\System32\\notepad.exe',
+      filePath
+    );
     const reopenedNotepad = new NotepadApp(reopenedSession);
     try {
       const reopenedText = await reopenedNotepad.readAll();

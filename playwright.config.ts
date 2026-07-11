@@ -4,7 +4,7 @@ import { env } from './src/config/env';
 /**
  * Shared Playwright Test configuration for web, API, desktop, and mobile specs.
  * Desktop and mobile are excluded from npm test by tags because they require
- * external host/device infrastructure.
+ * external host/device infrastructure setup.
  */
 export default defineConfig({
   testDir: './tests',

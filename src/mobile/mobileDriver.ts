@@ -15,7 +15,9 @@ export async function createAndroidCalculatorSession(): Promise<MobileSession> {
       platformName: 'Android',
       'appium:automationName': 'UiAutomator2',
       'appium:deviceName': env.androidDeviceName,
-      ...(env.androidPlatformVersion ? { 'appium:platformVersion': env.androidPlatformVersion } : {}),
+      ...(env.androidPlatformVersion
+        ? { 'appium:platformVersion': env.androidPlatformVersion }
+        : {}),
       'appium:appPackage': 'com.google.android.calculator',
       'appium:appActivity': 'com.android.calculator2.Calculator',
       'appium:noReset': true

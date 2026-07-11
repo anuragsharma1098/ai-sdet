@@ -81,7 +81,11 @@ export class RestfulBookerClient {
   }
 
   /** Sends an untyped PUT payload for authorization and invalid-data checks. */
-  async putRawBooking(bookingId: number, token: string | undefined, data: unknown): Promise<APIResponse> {
+  async putRawBooking(
+    bookingId: number,
+    token: string | undefined,
+    data: unknown
+  ): Promise<APIResponse> {
     return this.request.put(this.endpoint(`/booking/${bookingId}`), {
       headers: token ? this.authHeaders(token) : undefined,
       data

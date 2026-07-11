@@ -53,7 +53,9 @@ export class MobileCalculatorApp {
     const clearHistory = await this.app.$('android=new UiSelector().textContains("Clear")');
     if (await clearHistory.isExisting()) {
       await clearHistory.click();
-      const confirm = await this.app.$('android=new UiSelector().textMatches("(?i)(OK|Delete|Clear)")');
+      const confirm = await this.app.$(
+        'android=new UiSelector().textMatches("(?i)(OK|Delete|Clear)")'
+      );
       if (await confirm.isExisting()) {
         await confirm.click();
       }

@@ -40,7 +40,10 @@ function resolveTestEnvironment(): TestEnvironment {
   );
 }
 
-function readEnvironmentOverride(environment: TestEnvironment, variableName: string): string | undefined {
+function readEnvironmentOverride(
+  environment: TestEnvironment,
+  variableName: string
+): string | undefined {
   return process.env[`${environment.toUpperCase()}_${variableName}`] ?? process.env[variableName];
 }
 
@@ -62,17 +65,23 @@ export const env = {
   orangeBaseUrl: normalizeBaseUrl(
     readEnvironmentOverride(testEnvironment, 'ORANGE_BASE_URL') ?? defaults.orangeBaseUrl
   ),
-  orangeUsername: readEnvironmentOverride(testEnvironment, 'ORANGE_USERNAME') ?? defaults.orangeUsername,
-  orangePassword: readEnvironmentOverride(testEnvironment, 'ORANGE_PASSWORD') ?? defaults.orangePassword,
+  orangeUsername:
+    readEnvironmentOverride(testEnvironment, 'ORANGE_USERNAME') ?? defaults.orangeUsername,
+  orangePassword:
+    readEnvironmentOverride(testEnvironment, 'ORANGE_PASSWORD') ?? defaults.orangePassword,
   restfulBookerBaseUrl: normalizeBaseUrl(
-    readEnvironmentOverride(testEnvironment, 'RESTFUL_BOOKER_BASE_URL') ?? defaults.restfulBookerBaseUrl
+    readEnvironmentOverride(testEnvironment, 'RESTFUL_BOOKER_BASE_URL') ??
+      defaults.restfulBookerBaseUrl
   ),
   restfulBookerUsername:
-    readEnvironmentOverride(testEnvironment, 'RESTFUL_BOOKER_USERNAME') ?? defaults.restfulBookerUsername,
+    readEnvironmentOverride(testEnvironment, 'RESTFUL_BOOKER_USERNAME') ??
+    defaults.restfulBookerUsername,
   restfulBookerPassword:
-    readEnvironmentOverride(testEnvironment, 'RESTFUL_BOOKER_PASSWORD') ?? defaults.restfulBookerPassword,
+    readEnvironmentOverride(testEnvironment, 'RESTFUL_BOOKER_PASSWORD') ??
+    defaults.restfulBookerPassword,
   appiumHost: readEnvironmentOverride(testEnvironment, 'APPIUM_HOST') ?? '127.0.0.1',
   appiumPort: Number(readEnvironmentOverride(testEnvironment, 'APPIUM_PORT') ?? 4723),
-  androidDeviceName: readEnvironmentOverride(testEnvironment, 'ANDROID_DEVICE_NAME') ?? 'Android Emulator',
+  androidDeviceName:
+    readEnvironmentOverride(testEnvironment, 'ANDROID_DEVICE_NAME') ?? 'Android Emulator',
   androidPlatformVersion: readEnvironmentOverride(testEnvironment, 'ANDROID_PLATFORM_VERSION')
 };

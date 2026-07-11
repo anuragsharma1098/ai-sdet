@@ -29,7 +29,9 @@ test.describe('Question #2 and #5: RESTful Booker API automation', () => {
     }
 
     for (const booking of created) {
-      await expect.poll(async () => client.getBooking(booking.bookingid)).toMatchObject(booking.booking);
+      await expect
+        .poll(async () => client.getBooking(booking.bookingid))
+        .toMatchObject(booking.booking);
     }
 
     const updatedPayload = createBookingData({
@@ -43,7 +45,9 @@ test.describe('Question #2 and #5: RESTful Booker API automation', () => {
 
     const deleteResponse = await client.deleteBooking(created[1].bookingid, token);
     expect([200, 201]).toContain(deleteResponse.status());
-    await expect.poll(async () => (await client.getRawBooking(created[1].bookingid)).status()).toBe(404);
+    await expect
+      .poll(async () => (await client.getRawBooking(created[1].bookingid)).status())
+      .toBe(404);
 
     const unaffectedBooking = await client.getBooking(created[2].bookingid);
     expect(unaffectedBooking).toMatchObject(created[2].booking);
@@ -62,7 +66,9 @@ test.describe('Question #2 and #5: RESTful Booker API automation', () => {
       if (scenario.method === 'POST') {
         status = (await client.postRawBooking(scenario.payload)).status();
       } else if (scenario.method === 'PUT') {
-        status = (await client.putRawBooking(booking.bookingid, 'invalid-token', scenario.payload)).status();
+        status = (
+          await client.putRawBooking(booking.bookingid, 'invalid-token', scenario.payload)
+        ).status();
       } else {
         status = (await client.deleteRawBooking(booking.bookingid)).status();
       }
