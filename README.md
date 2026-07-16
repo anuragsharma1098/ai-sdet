@@ -22,7 +22,7 @@ Enterprise-oriented Playwright + TypeScript automation framework covering:
 - Codex CLI through `@openai/codex`
 - VS Code extensions installed by the devcontainer for Playwright, TypeScript, ESLint, Prettier, EditorConfig, GitLens, GitHub Pull Requests, GitHub Actions, YAML, Markdown linting, Docker, Dev Containers, and Office Viewer
 
-## Setup
+## Setup-
 
 PowerShell:
 
