@@ -8,3 +8,4 @@ allure-report/
 .codex/playwright-mcp-output/
 .env
 npm-debug.log*
+.vscode/
