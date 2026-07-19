@@ -17,6 +17,9 @@ on:
           - qa
           - prd
 
+permissions:
+  contents: read
+
 env:
   TEST_ENV: ${{ github.event_name == 'workflow_dispatch' && inputs.test_environment || 'dev' }}
 
