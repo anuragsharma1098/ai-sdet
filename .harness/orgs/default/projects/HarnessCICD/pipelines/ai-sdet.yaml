@@ -1,0 +1,124 @@
+pipeline:
+  name: ai-sdet CI
+  identifier: ai_sdet_ci
+  projectIdentifier: HarnessCICD
+  orgIdentifier: default
+  tags: {}
+  properties:
+    ci:
+      codebase:
+        connectorRef: account.github
+        repoName: ai-sdet
+        build: <+input>
+  variables:
+    - name: test_environment
+      type: String
+      description: Target environment for web and API tests
+      required: true
+      value: <+input>.allowedValues(dev,qa,prd).default(dev)
+  stages:
+    - stage:
+        name: Quality and Playwright Tests
+        identifier: Quality_and_Playwright_Tests
+        description: Lint, typecheck, and run web/API Playwright tests against the selected environment
+        type: CI
+        spec:
+          cloneCodebase: true
+          caching:
+            enabled: true
+            override: true
+          buildIntelligence:
+            enabled: true
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Docker
+            spec: {}
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Install System Dependencies
+                  identifier: Install_System_Dependencies
+                  spec:
+                    image: mcr.microsoft.com/playwright:v1.61.0-noble
+                    shell: Sh
+                    command: |
+                      bash .devcontainer/install-system-deps.sh
+                      java -version
+              - step:
+                  type: Run
+                  name: Install Dependencies
+                  identifier: Install_Dependencies
+                  spec:
+                    image: mcr.microsoft.com/playwright:v1.61.0-noble
+                    shell: Sh
+                    command: npm install
+              - step:
+                  type: Run
+                  name: Show Target Environment
+                  identifier: Show_Target_Environment
+                  spec:
+                    shell: Sh
+                    command: echo "Running CI-safe web/API tests against TEST_ENV=<+pipeline.variables.test_environment>"
+              - step:
+                  type: Run
+                  name: Check Formatting
+                  identifier: Check_Formatting
+                  spec:
+                    image: mcr.microsoft.com/playwright:v1.61.0-noble
+                    shell: Sh
+                    command: npm run format:check
+              - step:
+                  type: Run
+                  name: Lint
+                  identifier: Lint
+                  spec:
+                    image: mcr.microsoft.com/playwright:v1.61.0-noble
+                    shell: Sh
+                    command: npm run lint
+              - step:
+                  type: Run
+                  name: Typecheck
+                  identifier: Typecheck
+                  spec:
+                    image: mcr.microsoft.com/playwright:v1.61.0-noble
+                    shell: Sh
+                    command: npm run typecheck
+              - step:
+                  type: Run
+                  name: Run Web and API Tests
+                  identifier: Run_Web_And_API_Tests
+                  spec:
+                    image: mcr.microsoft.com/playwright:v1.61.0-noble
+                    shell: Sh
+                    envVariables:
+                      TEST_ENV: <+pipeline.variables.test_environment>
+                    command: npm run test:<+pipeline.variables.test_environment>
+                    reports:
+                      type: JUnit
+                      spec:
+                        paths:
+                          - test-results/results.xml
+              - step:
+                  type: Run
+                  name: Generate Allure Report
+                  identifier: Generate_Allure_Report
+                  when:
+                    stageStatus: All
+                  spec:
+                    image: mcr.microsoft.com/playwright:v1.61.0-noble
+                    shell: Sh
+                    command: npm run report:allure
+              - step:
+                  type: Run
+                  name: Verify Test Results
+                  identifier: Verify_Test_Results
+                  when:
+                    stageStatus: All
+                  spec:
+                    shell: Sh
+                    command: |
+                      echo "Playwright and Allure artifacts:"
+                      ls -lh playwright-report test-results allure-results allure-report 2>/dev/null || true
