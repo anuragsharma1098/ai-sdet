@@ -110,7 +110,9 @@ pipeline:
                   spec:
                     image: mcr.microsoft.com/playwright:v1.61.0-noble
                     shell: Sh
-                    command: npm run report:allure
+                    command: |
+                      bash .devcontainer/install-system-deps.sh
+                      npm run report:allure
               - step:
                   type: Run
                   name: Verify Test Results
