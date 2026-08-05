@@ -7,3 +7,4 @@ allure-report
 .ai/mcp-output
 .codex/playwright-mcp-output
 package-lock.json
+plugin-build-tool.json
